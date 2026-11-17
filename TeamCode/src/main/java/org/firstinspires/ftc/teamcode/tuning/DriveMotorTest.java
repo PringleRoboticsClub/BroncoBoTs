@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.tuning;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -40,7 +39,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
  *                          "IMU yaw" must INCREASE (about +90 after a quarter turn).
  */
 @Config
-@TeleOp(name = "Tune: Drive Motors", group = "Tuning") // BIOBUZZ robot; TurboBoTs uses TurboBoTsDriveMotorTest
+@TeleOp(name = "Tune: Drive Motors", group = "Tuning")
 public class DriveMotorTest extends OpMode {
     public static double TEST_POWER = 0.3;
     public static double STICK_SCALE = 0.5;
@@ -56,10 +55,9 @@ public class DriveMotorTest extends OpMode {
     @Override
     public void init() {
         // Drivetrain applies the real motor directions + brake mode to these same motor objects.
-        drive = new Drivetrain(hardwareMap, hubOrientation());
+        drive = new Drivetrain(hardwareMap);
         drive.stop();
         for (int i = 0; i < 4; i++) motors[i] = hardwareMap.get(DcMotor.class, NAMES[i]);
-        applyDirections(motors);
 
         telemetry.addLine("WHEEL TEST on blocks: hold L1 / R1 / L2 / R2 for one wheel, CROSS for all.");
         telemetry.addLine("STICK TEST on the floor: use the sticks (robot-centric, half power).");
@@ -106,17 +104,6 @@ public class DriveMotorTest extends OpMode {
                     motors[i].getCurrentPosition());
         }
         telemetry.update();
-    }
-
-    /**
-     * Hook for another robot to use its own wheel directions (order: frontLeft, frontRight,
-     * backLeft, backRight). Default: keep the BIOBUZZ Drivetrain directions.
-     */
-    protected void applyDirections(DcMotor[] motors) {}
-
-    /** Hook for another robot's Control Hub mounting. Default: the BIOBUZZ robot's. */
-    protected RevHubOrientationOnRobot hubOrientation() {
-        return new RevHubOrientationOnRobot(Drivetrain.HUB_LOGO, Drivetrain.HUB_USB);
     }
 
     @Override
